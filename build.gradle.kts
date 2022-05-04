@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.6.7"
+	id("org.springframework.boot") version "2.4.3"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+	id("com.arenagod.gradle.MybatisGenerator") version "1.4" // 追加
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 }
@@ -20,7 +21,12 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
 	implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2")
+	implementation("org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.2.1") // 追加
+	implementation("mysql:mysql-connector-java:8.0.23") // 追加
+	mybatisGenerator("org.mybatis.generator:mybatis-generator-core:1.4.0") // 追加
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -33,4 +39,9 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+mybatisGenerator {
+	verbose = true
+	configFile = "${projectDir}/src/main/resources/generatorConfig.xml"
 }
